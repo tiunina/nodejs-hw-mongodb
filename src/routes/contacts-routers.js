@@ -7,8 +7,11 @@ import {
   contactsAddSchema,
   contactsUpdateSchema,
 } from '../validation/contacts-schemas.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = Router();
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get('/', ctrlWrapper(contactsController.getContactsController));
 
