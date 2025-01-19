@@ -82,18 +82,47 @@ export const requestResetToken = async (email) => {
       sub: user._id,
       email,
     },
-    getEnvVar('JWT_SECRET'),
+    jwtSecret,
     {
       expiresIn: '15m',
     },
   );
 
+  const resetLink = `${appDomain}/reset-password?token=${resetToken}`;
+
   await sendEmail({
     from: getEnvVar('SMTP_FROM'),
     to: email,
     subject: 'Reset your password',
-    html: `<p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
+    html: `<p>Click <a href="${resetLink}">here</a> to reset your password!</p>`,
   });
+};
+
+export const resetPassword = async (payload) => {
+  let entries;
+
+  try {
+    entries = jwt.verify(payload.token, jwtSecret);
+  } catch (err) {
+    if (err instanceof Error) throw createHttpError(401, err.message);
+    throw err;
+  }
+
+  const user = await UsersCollection.findOne({
+    email: entries.email,
+    _id: entries.sub,
+  });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+  await UsersCollection.updateOne(
+    { _id: user._id },
+    { password: encryptedPassword },
+  );
 };
 
 export const login = async ({ email, password }) => {

@@ -4,6 +4,7 @@ import {
   authRegisterSchema,
   authLoginSchema,
   requestResetEmailSchema,
+  resetPasswordSchema,
 } from '../validation/auth.js';
 import * as authController from '../controllers/auth.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
@@ -26,6 +27,12 @@ authRouter.post(
   '/request-reset-email',
   validateBody(requestResetEmailSchema),
   ctrlWrapper(authController.requestResetEmailController),
+);
+
+authRouter.post(
+  '/reset-pwd',
+  validateBody(resetPasswordSchema),
+  ctrlWrapper(authController.resetPasswordController),
 );
 
 authRouter.get('/verify', ctrlWrapper(authController.verifyController));
