@@ -18,6 +18,9 @@ export const startServer = () => {
   app.use(express.static('uploads'));
   app.use(cookieParser());
   app.use('/api-docs', swaggerDocs());
+  app.get('/', (req, res) => {
+    res.send('🚀 API is up and running!');
+  });
 
   app.use(logger);
 
