@@ -554,6 +554,11 @@
               "personal"
             ]
           },
+          "userId": {
+            "description": "Contact's creator id",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
+          },
           "email": {
             "description": "Contact's email",
             "type": "string",
@@ -563,11 +568,6 @@
             "description": "Whether it is your favourite contact",
             "type": "boolean",
             "example": true
-          },
-          "userId": {
-            "description": "Contact's creator id",
-            "type": "string",
-            "example": "65e4decdd286b30065d54af9"
           },
           "photo": {
             "description": "Link to contact's photo",
