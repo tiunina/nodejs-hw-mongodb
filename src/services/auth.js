@@ -63,7 +63,7 @@ export const verify = async (token) => {
     if (!user) {
       throw createHttpError(401, 'User not found');
     }
-    await UsersCollection.findOneAndUpdate({ _id: user._id }, { verify: true });
+    // await UsersCollection.findOneAndUpdate({ _id: user._id }, { verify: true });
   } catch (error) {
     throw createHttpError(401, error.message);
   }
