@@ -37,6 +37,7 @@ export const register = async (payload) => {
   const newUser = await UsersCollection.create({
     ...payload,
     password: hashPassword,
+    verify: true,
   });
 
   const template = Handlebars.compile(emailTemplateSourse);
@@ -56,17 +57,20 @@ export const register = async (payload) => {
   return newUser;
 };
 
+// export const verify = async (token) => {
+//   try {
+//     const { email } = jwt.verify(token, jwtSecret);
+//     const user = await UsersCollection.findOne({ email });
+//     if (!user) {
+//       throw createHttpError(401, 'User not found');
+//     }
+//     await UsersCollection.findOneAndUpdate({ _id: user._id }, { verify: true });
+//   } catch (error) {
+//     throw createHttpError(401, error.message);
+//   }
+// };
 export const verify = async (token) => {
-  try {
-    const { email } = jwt.verify(token, jwtSecret);
-    const user = await UsersCollection.findOne({ email });
-    if (!user) {
-      throw createHttpError(401, 'User not found');
-    }
-    await UsersCollection.findOneAndUpdate({ _id: user._id }, { verify: true });
-  } catch (error) {
-    throw createHttpError(401, error.message);
-  }
+  throw createHttpError(400, 'Email verification logic removed');
 };
 
 export const requestResetToken = async (email) => {
@@ -131,9 +135,9 @@ export const login = async ({ email, password }) => {
   if (!user) {
     throw createHttpError(401, 'Email or password is invalid');
   }
-  if (!user.verify) {
-    throw createHttpError(401, 'Email is not verified');
-  }
+  // if (!user.verify) {
+  //   throw createHttpError(401, 'Email is not verified');
+  // }
   const passwordCompare = await bcrypt.compare(password, user.password);
 
   if (!passwordCompare) {

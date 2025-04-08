@@ -35,7 +35,7 @@ authRouter.post(
   ctrlWrapper(authController.resetPasswordController),
 );
 
-authRouter.get('/verify', ctrlWrapper(authController.verifyController));
+// authRouter.get('/verify', ctrlWrapper(authController.verifyController));
 
 authRouter.post('/refresh', ctrlWrapper(authController.refreshTokenController));
 
