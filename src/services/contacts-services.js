@@ -14,7 +14,10 @@ export const getContacts = async ({
   if (filter.type) {
     contactsQuery.where('contactType').equals(filter.type);
   }
-  if (filter.isFavourite) {
+  // if (filter.isFavourite) {
+  //   contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  // }
+  if (typeof filter.isFavourite === 'boolean') {
     contactsQuery.where('isFavourite').equals(filter.isFavourite);
   }
   if (filter.userId) {
@@ -43,6 +46,8 @@ export const updateContact = async (filter, payload, options = {}) => {
   const result = await ContactCollection.findOneAndUpdate(filter, payload, {
     upsert,
     includeResultMetadata: true,
+    new: true,
+    rawResult: true,
   });
   if (!result || !result.value) return null;
 
